@@ -1,3 +1,37 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>BLAST SHOOTER</title><style>*{margin:0;padding:0;box-sizing:border-box}html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12}#game{position:fixed;inset:0;width:100vw;height:100dvh}#top{position:fixed;top:0;left:0;width:100%;padding:16px;display:flex;justify-content:space-between;color:#00f2ff;font:900 20px monospace;z-index:10}#bot{position:fixed;bottom:0;left:0;width:100%;padding:16px;display:flex;justify-content:space-between;z-index:10}#fs{background:#00f2ff;border:0;padding:10px 18px;border-radius:30px;font-weight:900}</style></head><body><div id="top"><span>SCORE <b id="s">0</b></span><span id="hp">HP 3</span></div><canvas id="game"></canvas><div id="bot"><span style="color:#fff">ðŸ”Š<input id="v" type="range" min="0" max="100" value="80" style="width:120px;accent-color:#00f2ff"></span><button id="fs">â›¶ </button></div><script>
-const c=document.getElementById('game'),x=c.getContext('2d');function rs(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';x.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}rs();onresize=rs;document.getElementById('fs').onclick=()=>{document.documentElement.requestFullscreen();setTimeout(rs,200)};const A=new(window.AudioContext||window.webkitAudioContext)();let V=.8;function pew(f,d,t='square'){if(!V)return;const o=A.createOscillator(),g=A.createGain();o.type=t;o.frequency.value=f;o.connect(g);g.connect(A.destination);g.gain.setValueAtTime(V*.6,A.currentTime);g.gain.exponentialRampToValueAtTime(.01,A.currentTime+d);o.start();o.stop(A.currentTime+d)};document.getElementById('v').oninput=e=>{V=e.target.value/100;A.resume();pew(700,.1)};let sc=0,hp=3,pl={x:innerWidth/2,y:innerHeight/2},ms={x:innerWidth/2,y:innerHeight/2},bul=[],ene=[],par=[],ls=0;onmousemove=e=>{ms.x=e.clientX;ms.y=e.clientY};ontouchmove=e=>{ms.x=e.touches[0].clientX;ms.y=e.touches[0].clientY};setInterval(()=>{let a=Math.random()*6.28,d=Math.max(innerWidth,innerHeight);ene.push({x:pl.x+Math.cos(a)*d,y:pl.y+Math.sin(a)*d,r:18,s:1.3+Math.random()})},600);function boom(x0,y0,co){for(let i=0;i<9;i++)par.push({x:x0,y:y0,vx:(Math.random()-.5)*9,vy:(Math.random()-.5)*9,l:1,c:co})}function lp(t){pl.x+=(ms.x-pl.x)*.15;pl.y+=(ms.y-pl.y)*.15;if(t-ls>110){let dx=ms.x-pl.x,dy=ms.y-pl.y,l=Math.hypot(dx,dy)||1;bul.push({x:pl.x,y:pl.y,vx:dx/l*15,vy:dy/l*15});pew(900,.07);ls=t}x.fillStyle='#0a0a12';x.fillRect(0,0,innerWidth,innerHeight);x.strokeStyle='rgba(0,242,255,.07)';for(let i=0;i<innerWidth;i+=40){x.beginPath();x.moveTo(i,0);x.lineTo(i,innerHeight);x.stroke()}for(let j=0;j<innerHeight;j+=40){x.beginPath();x.moveTo(0,j);x.lineTo(innerWidth,j);x.stroke()}x.fillStyle='#00f2ff';x.shadowColor='#00f2ff';x.shadowBlur=25;x.beginPath();x.arc(pl.x,pl.y,18,0,7);x.fill();x.shadowBlur=0;x.fillStyle='#ffea00';bul.forEach((b,i)=>{b.x+=b.vx;b.y+=b.vy;x.beginPath();x.arc(b.x,b.y,5,0,7);x.fill();if(b.x<-50||b.x>innerWidth+50||b.y<-50||b.y>innerHeight+50)bul.splice(i,1)});x.fillStyle='#ff0055';ene.forEach((e,i)=>{let a=Math.atan2(pl.y-e.y,pl.x-e.x);e.x+=Math.cos(a)*e.s;e.y+=Math.sin(a)*e.s;x.beginPath();x.arc(e.x,e.y,e.r,0,7);x.fill();if(Math.hypot(e.x-pl.x,e.y-pl.y)<20+e.r){ene.splice(i,1);hp--;hpEl.innerText='HP '+hp;pew(120,.3);boom(e.x,e.y,'#ff0055');if(hp<=0){pew(40,1,'sawtooth');alert('DEAD Score '+sc);sc=0;hp=3;ene=[];bul=[];sEl.innerText=sc;hpEl.innerText='HP '+hp}}bul.forEach((b,j)=>{if(Math.hypot(e.x-b.x,e.y-b.y)<e.r+6){ene.splice(i,1);bul.splice(j,1);sc++;sEl.innerText=sc;pew(1300,.12);boom(e.x,e.y,'#ffea00')}})});par.forEach((p,i)=>{p.x+=p.vx;p.y+=p.vy;p.l-=.04;x.globalAlpha=p.l;x.fillStyle=p.c;x.fillRect(p.x,p.y,4,4);x.globalAlpha=1;if(p.l<=0)par.splice(i,1)});requestAnimationFrame(lp)}const sEl=document.getElementById('s'),hpEl=document.getElementById('hp');requestAnimationFrame(lp);
-</script></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BLAST SHOOTER</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12}
+canvas{position:fixed;inset:0;width:100vw;height:100dvh}
+#top{position:fixed;top:0;left:0;width:100%;padding:16px;display:flex;justify-content:space-between;color:#00f2ff;font:900 20px monospace;z-index:10}
+#bot{position:fixed;bottom:0;left:0;width:100%;padding:16px;display:flex;justify-content:space-between;z-index:10}
+#fs{background:#00f2ff;border:0;padding:10px 18px;border-radius:30px;font-weight:900}
+</style>
+</head>
+<body>
+<div id="top"><span>SCORE <b id="s">0</b></span><span id="hp">HP 3</span></div>
+<canvas id="g"></canvas>
+<div id="bot"><span style="color:#fff">🔊<input id="v" type="range" min="0" max="100" value="80"></span><button id="fs">⛶ FULLSCREEN</button></div>
+<script>
+const c=document.getElementById('g'),x=c.getContext('2d');
+function R(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';x.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}R();onresize=R;
+document.getElementById('fs').onclick=()=>{document.documentElement.requestFullscreen();setTimeout(R,200)};
+let sc=0,hp=3,pl={x:innerWidth/2,y:innerHeight/2},ms={x:innerWidth/2,y:innerHeight/2},bul=[],ene=[];
+onmousemove=e=>{ms.x=e.clientX;ms.y=e.clientY};
+ontouchmove=e=>{ms.x=e.touches[0].clientX;ms.y=e.touches[0].clientY};
+setInterval(()=>{let a=Math.random()*6.28,d=Math.max(innerWidth,innerHeight);ene.push({x:pl.x+Math.cos(a)*d,y:pl.y+Math.sin(a)*d,r:18,s:1.5})},600);
+function L(){pl.x+=(ms.x-pl.x)*.15;pl.y+=(ms.y-pl.y)*.15;if(Math.random()<.08){let dx=ms.x-pl.x,dy=ms.y-pl.y,l=Math.hypot(dx,dy)||1;bul.push({x:pl.x,y:pl.y,vx:dx/l*14,vy:dy/l*14})}
+x.fillStyle='#0a0a12';x.fillRect(0,0,innerWidth,innerHeight);
+x.fillStyle='#00f2ff';x.shadowColor='#00f2ff';x.shadowBlur=20;x.beginPath();x.arc(pl.x,pl.y,16,0,7);x.fill();x.shadowBlur=0;
+x.fillStyle='#ffea00';bul.forEach((b,i)=>{b.x+=b.vx;b.y+=b.vy;x.beginPath();x.arc(b.x,b.y,5,0,7);x.fill();if(b.x<-50||b.x>innerWidth+50||b.y<-50||b.y>innerHeight+50)bul.splice(i,1)});
+x.fillStyle='#ff0055';ene.forEach((e,i)=>{let a=Math.atan2(pl.y-e.y,pl.x-e.x);e.x+=Math.cos(a)*e.s;e.y+=Math.sin(a)*e.s;x.beginPath();x.arc(e.x,e.y,e.r,0,7);x.fill();
+if(Math.hypot(e.x-pl.x,e.y-pl.y)<22){ene.splice(i,1);hp--;document.getElementById('hp').innerText='HP '+hp;if(hp<=0){alert('DEAD Score '+sc);sc=0;hp=3;ene=[];bul=[];document.getElementById('s').innerText=sc;document.getElementById('hp').innerText='HP '+hp}}
+bul.forEach((b,j)=>{if(Math.hypot(e.x-b.x,e.y-b.y)<e.r+5){ene.splice(i,1);bul.splice(j,1);sc++;document.getElementById('s').innerText=sc}})});
+requestAnimationFrame(L)}requestAnimationFrame(L);
+</script>
+</body>
+</html>
