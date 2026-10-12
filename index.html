@@ -35,7 +35,7 @@ x.fillStyle='#ff0055';ene.forEach((e,i)=>{
 let a=Math.atan2(pl.y-e.y,pl.x-e.x);e.x+=Math.cos(a)*1.7;e.y+=Math.sin(a)*1.7;
 x.beginPath();x.arc(e.x,e.y,e.r,0,6.28);x.fill();
 if(Math.hypot(e.x-pl.x,e.y-pl.y)<20){ene.splice(i,1);hp--;document.getElementById('hp').innerText='HP '+hp;if(hp<=0){document.getElementById('fsco').innerText='Score '+sc;document.getElementById('over').style.display='flex';return}}
-bul.forEach((b,j)=>{if(Math.hypot(e.x-b.x,e.y-b.y)<e.r+4){ene.splice(i,1);bul.splice(j,1);sc+=10;document.getElementById('s').innerText=sc}})
+bul.forEach((b,j)=>{if(Math.hypot(e.x-b.x,e.y-b.y)<e.r+4){ene.splice(i,1);bul.splice(j,1);sc+=1;document.getElementById('s').innerText=sc}})
 });
 requestAnimationFrame(L)})();
 </script>
