@@ -2,7 +2,6 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#00f2ff">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-512.png">
 <title>BLAST SHOOTER</title>
@@ -10,40 +9,35 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#0a0a12}
 canvas{position:fixed;inset:0;width:100vw;height:100dvh}
-#top{position:fixed;top:0;left:0;width:100%;padding:16px;display:flex;justify-content:space-between;color:#fff;font-family:monospace;font-size:18px;z-index:10}
-#bot{position:fixed;bottom:0;left:0;width:100%;padding:16px;display:flex;justify-content:space-between;z-index:10}
-#fs{background:#00f2ff;border:0;padding:10px 18px;border-radius:30px;font-weight:900}
-#over{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:999;color:#00f2ff;font-family:monospace}
-#over h1{font-size:50px} #over button{margin-top:20px;padding:15px 30px;background:#00f2ff;border:0;border-radius:12px;font-size:20px;font-weight:900}
+#top{position:fixed;top:0;left:0;width:100%;padding:16px;display:flex;justify-content:space-between;color:#fff;font-family:monospace;font-size:20px;z-index:10}
+#over{position:fixed;inset:0;background:#000000e6;display:none;align-items:center;justify-content:center;flex-direction:column;z-index:999;color:#00f2ff;font-family:monospace;text-align:center}
+#over h1{font-size:50px} #over button{margin-top:20px;padding:14px 28px;background:#00f2ff;border:0;border-radius:12px;font-size:20px;font-weight:900}
 </style>
 </head>
 <body>
 <div id="top"><span>SCORE <b id="s">0</b></span><span id="hp">HP 3</span></div>
 <canvas id="g"></canvas>
-<div id="bot"><span style="color:#fff">🔊<input id="v" type="range" min="0" max="1" step="0.01" value="0.5"></span><button id="fs">⛶</button></div>
 <div id="over"><h1>DEAD</h1><h2 id="fsco">Score 0</h2><button onclick="location.reload()">RESTART</button></div>
 <script>
 const c=document.getElementById('g'),x=c.getContext('2d');
-function R(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;x.scale(devicePixelRatio,devicePixelRatio)}
-R();onresize=R;
+function R(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;x.scale(devicePixelRatio,devicePixelRatio)}R();onresize=R;
 let sc=0,hp=3,pl={x:innerWidth/2,y:innerHeight/2},ms={x:innerWidth/2,y:innerHeight/2},ene=[],bul=[];
 onmousemove=e=>{ms.x=e.clientX;ms.y=e.clientY};
 ontouchmove=e=>{ms.x=e.touches[0].clientX;ms.y=e.touches[0].clientY};
-setInterval(()=>{let a=Math.random()*6.28,d=Math.max(innerWidth,innerHeight);ene.push({x:pl.x+Math.cos(a)*d,y:pl.y+Math.sin(a)*d,r:14+Math.random()*14})},800);
-function L(){
-pl.x+=(ms.x-pl.x)*.15;pl.y+=(ms.y-pl.y)*.15;
-if(Math.random()<.08){let a=Math.atan2(ms.y-pl.y,ms.x-pl.x);bul.push({x:pl.x,y:pl.y,vx:Math.cos(a)*12,vy:Math.sin(a)*12})}
+setInterval(()=>{let a=Math.random()*6.28,d=Math.max(innerWidth,innerHeight);ene.push({x:pl.x+Math.cos(a)*d,y:pl.y+Math.sin(a)*d,r:14+Math.random()*14})},700);
+(function L(){
+pl.x+=(ms.x-pl.x)*.14;pl.y+=(ms.y-pl.y)*.14;
+if(Math.random()<.09){let a=Math.atan2(ms.y-pl.y,ms.x-pl.x);bul.push({x:pl.x,y:pl.y,vx:Math.cos(a)*12,vy:Math.sin(a)*12})}
 x.fillStyle='#0a0a12';x.fillRect(0,0,innerWidth,innerHeight);
-x.fillStyle='#00f2ff';x.shadowColor='#00f2ff';x.shadowBlur=20;x.beginPath();x.arc(pl.x,pl.y,12,0,6.28);x.fill();x.shadowBlur=0;
+x.fillStyle='#00f2ff';x.shadowColor='#00f2ff';x.shadowBlur=18;x.beginPath();x.arc(pl.x,pl.y,11,0,6.28);x.fill();x.shadowBlur=0;
 x.fillStyle='#ffea00';bul.forEach((b,i)=>{b.x+=b.vx;b.y+=b.vy;x.beginPath();x.arc(b.x,b.y,4,0,6.28);x.fill();if(b.x<0||b.x>innerWidth||b.y<0||b.y>innerHeight)bul.splice(i,1)});
 x.fillStyle='#ff0055';ene.forEach((e,i)=>{
-let a=Math.atan2(pl.y-e.y,pl.x-e.x);e.x+=Math.cos(a)*1.6;e.y+=Math.sin(a)*1.6;
+let a=Math.atan2(pl.y-e.y,pl.x-e.x);e.x+=Math.cos(a)*1.7;e.y+=Math.sin(a)*1.7;
 x.beginPath();x.arc(e.x,e.y,e.r,0,6.28);x.fill();
-if(Math.hypot(e.x-pl.x,e.y-pl.y)<22){ene.splice(i,1);hp--;document.getElementById('hp').innerText='HP '+hp;if(hp<=0){document.getElementById('fsco').innerText='Score '+sc;document.getElementById('over').style.display='flex';return}}
-bul.forEach((b,j)=>{if(Math.hypot(e.x-b.x,e.y-b.y)<e.r+5){ene.splice(i,1);bul.splice(j,1);sc+=10;document.getElementById('s').innerText=sc}})
+if(Math.hypot(e.x-pl.x,e.y-pl.y)<20){ene.splice(i,1);hp--;document.getElementById('hp').innerText='HP '+hp;if(hp<=0){document.getElementById('fsco').innerText='Score '+sc;document.getElementById('over').style.display='flex';return}}
+bul.forEach((b,j)=>{if(Math.hypot(e.x-b.x,e.y-b.y)<e.r+4){ene.splice(i,1);bul.splice(j,1);sc+=10;document.getElementById('s').innerText=sc}})
 });
-requestAnimationFrame(L)}requestAnimationFrame(L);
-document.getElementById('fs').onclick=()=>document.documentElement.requestFullscreen();
+requestAnimationFrame(L)})();
 </script>
 </body>
 </html>
