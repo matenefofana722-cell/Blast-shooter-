@@ -1,0 +1,11 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.blastshooter.game",
+    "sha256_cert_fingerprints": [
+      "CA:99:8B:5C:B0:1D:89:D5:6B:01:0D:FD:C4:2A:66:64:2B:7A:9B:6B:24:92:E5:42:8B:4C:3C:5B:DC:8B:33",
+      "DD:5C:D0:9B:67:2B:39:C6:63:6D:7F:6A:38:2B:33:D3:96:2A:78:65:F1:58:11:91:40:AB:5C:97:51:DF:20:FC"
+    ]
+  }
+}]
